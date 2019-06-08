@@ -8,6 +8,7 @@ package jb.test.networktest;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import javax.swing.JTextField;
+import org.json.JSONObject;
 
 /**
  *
@@ -39,7 +40,7 @@ public class FrmMain extends javax.swing.JFrame {
         lbPort = new javax.swing.JLabel();
         txtPort = new javax.swing.JTextField();
         lbURI = new javax.swing.JLabel();
-        txtPort1 = new javax.swing.JTextField();
+        txtURI = new javax.swing.JTextField();
         scrResponse = new javax.swing.JScrollPane();
         txtResponse = new javax.swing.JTextArea();
         btnSend = new javax.swing.JButton();
@@ -124,16 +125,16 @@ public class FrmMain extends javax.swing.JFrame {
         lbURI.setToolTipText("");
         lbURI.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        txtPort1.setToolTipText("");
-        txtPort1.setMaximumSize(new java.awt.Dimension(6, 20));
-        txtPort1.addFocusListener(new java.awt.event.FocusAdapter() {
+        txtURI.setToolTipText("");
+        txtURI.setMaximumSize(new java.awt.Dimension(6, 20));
+        txtURI.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txtPort1FocusLost(evt);
+                txtURIFocusLost(evt);
             }
         });
-        txtPort1.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtURI.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPort1KeyTyped(evt);
+                txtURIKeyTyped(evt);
             }
         });
 
@@ -142,6 +143,11 @@ public class FrmMain extends javax.swing.JFrame {
         scrResponse.setViewportView(txtResponse);
 
         btnSend.setText("Send");
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -154,7 +160,7 @@ public class FrmMain extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbURI)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPort1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(txtURI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbIP)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -190,7 +196,7 @@ public class FrmMain extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbURI)
-                    .addComponent(txtPort1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtURI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrResponse, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
@@ -234,20 +240,24 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIP1KeyTyped
 
     private void txtPortFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPortFocusLost
-        // TODO add your handling code here:
+        sTestPortField(txtPort);
     }//GEN-LAST:event_txtPortFocusLost
 
     private void txtPortKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPortKeyTyped
-        // TODO add your handling code here:
+        hInputDigit(evt);
     }//GEN-LAST:event_txtPortKeyTyped
 
-    private void txtPort1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPort1FocusLost
+    private void txtURIFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtURIFocusLost
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPort1FocusLost
+    }//GEN-LAST:event_txtURIFocusLost
 
-    private void txtPort1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPort1KeyTyped
+    private void txtURIKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtURIKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPort1KeyTyped
+    }//GEN-LAST:event_txtURIKeyTyped
+
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        sSendRequest();
+    }//GEN-LAST:event_btnSendActionPerformed
 
     private void hInputDigit(KeyEvent pEvent) {
         char lInput;
@@ -280,6 +290,49 @@ public class FrmMain extends javax.swing.JFrame {
             pIP.setForeground(Color.red);
         }
         return lOK;
+    }
+
+    private boolean sTestPortField(JTextField pPort) {
+        String lText;
+        boolean lOK;
+        int lComp;
+
+        lText = pPort.getText().trim();
+        try {
+            lComp = Integer.parseInt(lText);
+            if (lComp < 0 || lComp > 65535) {
+                lOK = false;
+            } else {
+                lOK = true;
+            }
+        } catch (NumberFormatException pExc) {
+            lOK = false;
+        }
+        if (lOK) {
+            pPort.setForeground(Color.BLACK);
+        } else {
+            pPort.setForeground(Color.red);
+        }
+        return lOK;
+    }
+
+    private void sSendRequest() {
+        int lResult;
+        RestAPI lRest;
+        RestAPI.RestResult lReply;
+
+        lRest = new RestAPI();
+        txtResponse.setText("");
+        lRest.xMethod(RestAPI.cMethodGet);
+        lRest.xMediaRequest(RestAPI.cMediaText);
+        lRest.xMediaReply(RestAPI.cMediaJSON);
+        lRest.xUrl("http://" + txtIP1.getText() + "." + txtIP2.getText() + "." + txtIP3.getText() + "." + txtIP4.getText() + ":" + txtPort.getText() + "/" + txtURI.getText());
+        lReply = lRest.xCallApi();
+        lResult = lReply.xResult();
+        if (lResult != Result.cResultOK) {
+            txtResponse.append(lReply.xText() + "\n");
+        }
+        txtResponse.append(lReply.xReplyS());
     }
 
     /**
@@ -328,7 +381,7 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JTextField txtIP3;
     private javax.swing.JTextField txtIP4;
     private javax.swing.JTextField txtPort;
-    private javax.swing.JTextField txtPort1;
     private javax.swing.JTextArea txtResponse;
+    private javax.swing.JTextField txtURI;
     // End of variables declaration//GEN-END:variables
 }

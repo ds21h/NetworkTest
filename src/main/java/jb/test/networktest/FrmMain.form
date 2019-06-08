@@ -30,7 +30,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lbURI" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="txtPort1" max="32767" attributes="0"/>
+                      <Component id="txtURI" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="lbIP" min="-2" max="-2" attributes="0"/>
@@ -73,7 +73,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lbURI" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtPort1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtURI" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="scrResponse" min="-2" pref="177" max="-2" attributes="0"/>
@@ -163,7 +163,7 @@
         <Property name="verticalAlignment" type="int" value="1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtPort1">
+    <Component class="javax.swing.JTextField" name="txtURI">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -171,8 +171,8 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtPort1FocusLost"/>
-        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPort1KeyTyped"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtURIFocusLost"/>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtURIKeyTyped"/>
       </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="scrResponse">
@@ -194,6 +194,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Send"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSendActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
