@@ -15,12 +15,25 @@ import org.json.JSONObject;
  * @author Jan
  */
 public class FrmMain extends javax.swing.JFrame {
-
+    private final String cVerbs[] = {"GET", "PUT", "POST", "DELETE"};
+    private final String cMedia[] = {"Text", "JSON"};
     /**
      * Creates new form FrmMain
      */
     public FrmMain() {
+        int lCount;
+        
         initComponents();
+        cmbVerb.removeAllItems();
+        for (lCount = 0; lCount < cVerbs.length; lCount++){
+            cmbVerb.addItem(cVerbs[lCount]);
+        }
+        cmbMediaReq.removeAllItems();
+        cmbMediaResp.removeAllItems();
+        for (lCount = 0; lCount < cMedia.length; lCount++){
+            cmbMediaReq.addItem(cMedia[lCount]);
+            cmbMediaResp.addItem(cMedia[lCount]);
+        }
     }
 
     /**
@@ -41,9 +54,18 @@ public class FrmMain extends javax.swing.JFrame {
         txtPort = new javax.swing.JTextField();
         lbURI = new javax.swing.JLabel();
         txtURI = new javax.swing.JTextField();
+        scrRequest = new javax.swing.JScrollPane();
+        txtRequest = new javax.swing.JTextArea();
+        btnSend = new javax.swing.JButton();
+        lbPar = new javax.swing.JLabel();
+        txtPar = new javax.swing.JTextField();
+        cmbVerb = new javax.swing.JComboBox<>();
+        lbResponse = new javax.swing.JLabel();
+        cmbMediaReq = new javax.swing.JComboBox<>();
         scrResponse = new javax.swing.JScrollPane();
         txtResponse = new javax.swing.JTextArea();
-        btnSend = new javax.swing.JButton();
+        lbRequest = new javax.swing.JLabel();
+        cmbMediaResp = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -138,9 +160,10 @@ public class FrmMain extends javax.swing.JFrame {
             }
         });
 
-        txtResponse.setColumns(20);
-        txtResponse.setRows(5);
-        scrResponse.setViewportView(txtResponse);
+        txtRequest.setColumns(20);
+        txtRequest.setLineWrap(true);
+        txtRequest.setRows(5);
+        scrRequest.setViewportView(txtRequest);
 
         btnSend.setText("Send");
         btnSend.addActionListener(new java.awt.event.ActionListener() {
@@ -149,6 +172,40 @@ public class FrmMain extends javax.swing.JFrame {
             }
         });
 
+        lbPar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbPar.setText("Par:");
+        lbPar.setToolTipText("");
+        lbPar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        txtPar.setToolTipText("");
+        txtPar.setMaximumSize(new java.awt.Dimension(6, 20));
+        txtPar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtParFocusLost(evt);
+            }
+        });
+        txtPar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtParKeyTyped(evt);
+            }
+        });
+
+        lbResponse.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbResponse.setText("Response:");
+
+        cmbMediaReq.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        txtResponse.setEditable(false);
+        txtResponse.setColumns(20);
+        txtResponse.setLineWrap(true);
+        txtResponse.setRows(5);
+        scrResponse.setViewportView(txtResponse);
+
+        lbRequest.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbRequest.setText("Request:");
+
+        cmbMediaResp.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -156,29 +213,48 @@ public class FrmMain extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrResponse)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbURI)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtURI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lbIP)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtIP1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtIP2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lbPar, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(cmbVerb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lbURI)))
+                            .addComponent(cmbMediaReq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scrRequest, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtPar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtURI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtIP3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtIP4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(lbPort)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 316, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbIP)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIP1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIP2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIP3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIP4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lbPort)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 106, Short.MAX_VALUE))
+                        .addComponent(cmbMediaResp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addComponent(scrResponse))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSend)))
+                        .addComponent(btnSend))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbRequest)
+                            .addComponent(lbResponse))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -196,10 +272,25 @@ public class FrmMain extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbURI)
-                    .addComponent(txtURI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtURI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbVerb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbPar)
+                    .addComponent(txtPar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addComponent(lbRequest)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrResponse, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbMediaReq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(scrRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
+                .addComponent(lbResponse)
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrResponse, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbMediaResp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSend)
                 .addContainerGap())
         );
@@ -258,6 +349,14 @@ public class FrmMain extends javax.swing.JFrame {
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         sSendRequest();
     }//GEN-LAST:event_btnSendActionPerformed
+
+    private void txtParFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtParFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtParFocusLost
+
+    private void txtParKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtParKeyTyped
 
     private void hInputDigit(KeyEvent pEvent) {
         char lInput;
@@ -320,13 +419,17 @@ public class FrmMain extends javax.swing.JFrame {
         int lResult;
         RestAPI lRest;
         RestAPI.RestResult lReply;
+        String lVerb;
 
+        lVerb = (String)cmbVerb.getSelectedItem();
         lRest = new RestAPI();
         txtResponse.setText("");
-        lRest.xMethod(RestAPI.cMethodGet);
+        lRest.xMethod(lVerb);
         lRest.xMediaRequest(RestAPI.cMediaText);
         lRest.xMediaReply(RestAPI.cMediaJSON);
         lRest.xUrl("http://" + txtIP1.getText() + "." + txtIP2.getText() + "." + txtIP3.getText() + "." + txtIP4.getText() + ":" + txtPort.getText() + "/" + txtURI.getText());
+        lRest.xPars(txtPar.getText());
+        lRest.xRequest(txtRequest.getText());
         lReply = lRest.xCallApi();
         lResult = lReply.xResult();
         if (lResult != Result.cResultOK) {
@@ -372,15 +475,24 @@ public class FrmMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSend;
+    private javax.swing.JComboBox<String> cmbMediaReq;
+    private javax.swing.JComboBox<String> cmbMediaResp;
+    private javax.swing.JComboBox<String> cmbVerb;
     private javax.swing.JLabel lbIP;
+    private javax.swing.JLabel lbPar;
     private javax.swing.JLabel lbPort;
+    private javax.swing.JLabel lbRequest;
+    private javax.swing.JLabel lbResponse;
     private javax.swing.JLabel lbURI;
+    private javax.swing.JScrollPane scrRequest;
     private javax.swing.JScrollPane scrResponse;
     private javax.swing.JTextField txtIP1;
     private javax.swing.JTextField txtIP2;
     private javax.swing.JTextField txtIP3;
     private javax.swing.JTextField txtIP4;
+    private javax.swing.JTextField txtPar;
     private javax.swing.JTextField txtPort;
+    private javax.swing.JTextArea txtRequest;
     private javax.swing.JTextArea txtResponse;
     private javax.swing.JTextField txtURI;
     // End of variables declaration//GEN-END:variables
