@@ -12,22 +12,43 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Jan
  */
-public class DlgSelIP extends javax.swing.JDialog {
+class DlgSelIP extends javax.swing.JDialog {
+
     private Data mData;
+
     /**
      * Creates new form DlgSelIP
      */
-    public DlgSelIP(java.awt.Frame parent, boolean modal) {
+    DlgSelIP(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
 
         List<IPentry> lIPentries;
         DefaultTableModel lModel;
+        int lRow;
 
         initComponents();
         mData = Data.getInstance();
         lIPentries = mData.xIPentries();
-        lModel = new DefaultTableModel(lIPentries.size(), 3);
+        lModel = new DefaultTableModel() {
+            String[] lColumnName = {"Name", "IP", "Port"};
+
+            @Override
+            public int getColumnCount() {
+                return lColumnName.length;
+            }
+
+            @Override
+            public String getColumnName(int pIndex) {
+                return lColumnName[pIndex];
+            }
+        };
+        lModel.setRowCount(lIPentries.size());
         tblIP.setModel(lModel);
+        for (lRow = 0; lRow < lIPentries.size(); lRow++){
+            lModel.setValueAt(lIPentries.get(lRow).xName() , lRow, 0);
+            lModel.setValueAt(lIPentries.get(lRow).xIP() , lRow, 1);
+            lModel.setValueAt(lIPentries.get(lRow).xPort() , lRow, 2);
+        }
     }
 
     /**
@@ -43,6 +64,7 @@ public class DlgSelIP extends javax.swing.JDialog {
         tblIP = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Select IP address");
 
         tblIP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
