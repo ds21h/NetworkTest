@@ -23,4 +23,16 @@ class IPentry {
         mIP[3] = pIP4;
         mPort = pPort;
     }
+    
+    String xName(){
+        return mName;
+    }
+    
+    String xIP(){
+        return String.valueOf(mIP[0]) + "." + String.valueOf(mIP[1]) + "." + String.valueOf(mIP[2]) + "." + String.valueOf(mIP[3]);
+    }
+    
+    int xPort(){
+        return mPort;
+    }
 }
