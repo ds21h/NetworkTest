@@ -6,6 +6,10 @@ You specify the IP address of the service you are testing. You also enter the UR
 
 History
 
+Version 1.0 -
+- Supports data format 'text' and 'JSON'
+- Also supports data format 'image' for reply
+
 Version 0.2 - 09-06-2019
 - Now also handles other verbs.
 - Can send data to the service

@@ -95,6 +95,11 @@ public class FrmMain extends javax.swing.JFrame {
 
         mnuSave.setText("Save");
         mnuSave.setToolTipText("");
+        mnuSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuSaveActionPerformed(evt);
+            }
+        });
         popIP.add(mnuSave);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -411,6 +416,14 @@ public class FrmMain extends javax.swing.JFrame {
         mSel = new DlgSelIP(this, true);
         mSel.setVisible(true);
     }//GEN-LAST:event_mnuReadActionPerformed
+
+    private void mnuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSaveActionPerformed
+        DlgSaveIP mSave;
+        
+        mSave = new DlgSaveIP(this, true);
+        mSave.xInitData(Integer.valueOf(txtIP1.getText()), Integer.valueOf(txtIP2.getText()), Integer.valueOf(txtIP3.getText()), Integer.valueOf(txtIP4.getText()), Integer.valueOf(txtPort.getText()));
+        mSave.setVisible(true);
+    }//GEN-LAST:event_mnuSaveActionPerformed
 
     private void hInputDigit(KeyEvent pEvent) {
         char lInput;
