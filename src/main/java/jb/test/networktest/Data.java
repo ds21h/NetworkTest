@@ -157,7 +157,8 @@ public class Data {
     private boolean sDefineIP() {
         Statement lStm;
         String lSql = "CREATE TABLE IPaddress ("
-                + "Name Text primary key, "
+                + "IPid integer primary key, "
+                + "Name Text Not Null, "
                 + "IP1 integer Not Null, "
                 + "IP2 integer Not Null, "
                 + "IP3 integer Not Null, "
@@ -242,6 +243,7 @@ public class Data {
     public List<IPentry> xIPentries() {
         List<IPentry> lIPentries;
         IPentry lIPentry;
+        int lIPid;
         String lName;
         int lIP1;
         int lIP2;
@@ -250,7 +252,7 @@ public class Data {
         int lPort;
         Statement lStm;
         ResultSet lRes;
-        String lSql = "SELECT Name, IP1, IP2, IP3, IP4, Port "
+        String lSql = "SELECT IPid, Name, IP1, IP2, IP3, IP4, Port "
                 + "FROM IPaddress "
                 + "ORDER BY Name;";
 
@@ -261,13 +263,14 @@ public class Data {
                 lStm = mConn.createStatement();
                 lRes = lStm.executeQuery(lSql);
                 while (lRes.next()) {
+                    lIPid = lRes.getInt("IPid");
                     lName = lRes.getString("Name");
                     lIP1 = lRes.getInt("IP1");
                     lIP2 = lRes.getInt("IP2");
                     lIP3 = lRes.getInt("IP3");
                     lIP4 = lRes.getInt("IP4");
                     lPort = lRes.getInt("Port");
-                    lIPentry = new IPentry(lName, lIP1, lIP2, lIP3, lIP4, lPort);
+                    lIPentry = new IPentry(lIPid, lName, lIP1, lIP2, lIP3, lIP4, lPort);
                     lIPentries.add(lIPentry);
                 }
                 lRes.close();
@@ -278,6 +281,28 @@ public class Data {
             }
         }
         return lIPentries;
+    }
+
+    public void xNewIP(IPentry pEntry) {
+        Statement lStm;
+        String lSql;
+        if (mStatus == cOK) {
+            lSql = "INSERT INTO IPaddress (Name, IP1, IP2, IP3, IP4, Port) "
+                    + "VALUES ('" + pEntry.xName() + "', "
+                    + pEntry.xIP(0) + ", "
+                    + pEntry.xIP(1) + ", "
+                    + pEntry.xIP(2) + ", "
+                    + pEntry.xIP(3) + ", "
+                    + pEntry.xPort() + ");";
+            try {
+                lStm = mConn.createStatement();
+                lStm.executeUpdate(lSql);
+                lStm.close();
+            } catch (SQLException ex) {
+                mStatus = cSQL_error;
+                mText = ex.getMessage();
+            }
+        }
     }
 
     public void xClose() {

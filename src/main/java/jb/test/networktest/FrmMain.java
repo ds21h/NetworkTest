@@ -26,7 +26,6 @@ public class FrmMain extends javax.swing.JFrame {
      * Creates new form FrmMain
      */
     public FrmMain() {
-        Data lData;
         int lCount;
 
         initComponents();
@@ -46,8 +45,6 @@ public class FrmMain extends javax.swing.JFrame {
             cmbMediaResp.addItem(cMediaResp[lCount]);
         }
         cmbMediaResp.setSelectedIndex(0);
-        lData = Data.getInstance();
-        lData.xClose();
     }
 
     /**
@@ -411,18 +408,58 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIP1MouseClicked
 
     private void mnuReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuReadActionPerformed
-        DlgSelIP mSel;
+        DlgSelIP lSel;
+        IPentry lEntry;
         
-        mSel = new DlgSelIP(this, true);
-        mSel.setVisible(true);
+        lSel = new DlgSelIP(this, true);
+        lSel.setVisible(true);
+        lEntry = lSel.xIPentry();
+        if (lEntry != null){
+            txtIP1.setText(String.valueOf(lEntry.xIP(0)));
+            txtIP2.setText(String.valueOf(lEntry.xIP(1)));
+            txtIP3.setText(String.valueOf(lEntry.xIP(2)));
+            txtIP4.setText(String.valueOf(lEntry.xIP(3)));
+            txtPort.setText(String.valueOf(lEntry.xPort()));
+        }
+        lSel.dispose();
     }//GEN-LAST:event_mnuReadActionPerformed
 
     private void mnuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSaveActionPerformed
-        DlgSaveIP mSave;
+        DlgSaveIP lSave;
+        int[] lIP;
+        int lPort;
         
-        mSave = new DlgSaveIP(this, true);
-        mSave.xInitData(Integer.valueOf(txtIP1.getText()), Integer.valueOf(txtIP2.getText()), Integer.valueOf(txtIP3.getText()), Integer.valueOf(txtIP4.getText()), Integer.valueOf(txtPort.getText()));
-        mSave.setVisible(true);
+        lIP = new int[4];
+        try{
+            lIP[0] = Integer.parseInt(txtIP1.getText());
+        } catch (NumberFormatException pExc){
+            lIP[0] = 0;
+        }
+        try{
+            lIP[1] = Integer.parseInt(txtIP2.getText());
+        } catch (NumberFormatException pExc){
+            lIP[1] = 0;
+        }
+        try{
+            lIP[2] = Integer.parseInt(txtIP3.getText());
+        } catch (NumberFormatException pExc){
+            lIP[2] = 0;
+        }
+        try{
+            lIP[3] = Integer.parseInt(txtIP4.getText());
+        } catch (NumberFormatException pExc){
+            lIP[3] = 0;
+        }
+        try{
+            lPort = Integer.parseInt(txtPort.getText());
+        } catch (NumberFormatException pExc){
+            lPort = 0;
+        }
+        
+        lSave = new DlgSaveIP(this, true);
+        lSave.xInitData(lIP, lPort);
+        lSave.setVisible(true);
+        lSave.dispose();
     }//GEN-LAST:event_mnuSaveActionPerformed
 
     private void hInputDigit(KeyEvent pEvent) {

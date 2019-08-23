@@ -5,6 +5,8 @@
  */
 package jb.test.networktest;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Jan
@@ -22,13 +24,12 @@ class DlgSaveIP extends javax.swing.JDialog {
         mIP = new int[4];
     }
 
-    void xInitData(int pIP1, int pIP2, int pIP3, int pIP4, int pPort){
-        mIP[0] = pIP1;
-        mIP[1] = pIP2;
-        mIP[2] = pIP3;
-        mIP[3] = pIP4;
+    void xInitData(int[] pIP, int pPort){
+        mIP = pIP;
         mPort = pPort;
-        lbIPaddress.setText(String.valueOf(mIP[0]) + "." + String.valueOf(mIP[1]) + "." + String.valueOf(mIP[2]) + "." + String.valueOf(mIP[3]) + ":" + String.valueOf(mPort));
+        lbIPaddress.setText(String.valueOf(mIP[0]) + "." + String.valueOf(mIP[1]) + "." + String.valueOf(mIP[2]) + "." + String.valueOf(mIP[3]) + " : " + String.valueOf(mPort));
+
+    //    btnOK.setEnabled(false);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,10 +41,36 @@ class DlgSaveIP extends javax.swing.JDialog {
     private void initComponents() {
 
         lbIPaddress = new javax.swing.JLabel();
+        lbIP = new javax.swing.JLabel();
+        lbName = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
+        btnOK = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        lbIPaddress.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lbIPaddress.setText("0.0.0.0:0");
+
+        lbIP.setText("IP address:");
+
+        lbName.setText("Name:");
+
+        btnOK.setText("OK");
+        btnOK.setMaximumSize(new java.awt.Dimension(65, 23));
+        btnOK.setMinimumSize(new java.awt.Dimension(65, 23));
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
+
+        btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -51,63 +78,68 @@ class DlgSaveIP extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbIPaddress)
-                .addContainerGap(347, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbIP)
+                    .addComponent(lbName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbIPaddress)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCancel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbIPaddress)
-                .addContainerGap(275, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbIPaddress)
+                    .addComponent(lbIP))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbName)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancel))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DlgSaveIP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DlgSaveIP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DlgSaveIP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DlgSaveIP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        setVisible(false);
+    }//GEN-LAST:event_btnCancelActionPerformed
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                DlgSaveIP dialog = new DlgSaveIP(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        String lName;
+        IPentry lEntry;
+        Data lData;
+        
+        lName = txtName.getText().trim();
+        if (lName.equals("")){
+            JOptionPane.showMessageDialog(this, "Name must be provided!");
+        } else {
+            lEntry = new IPentry(lName, mIP, mPort);
+            lData = Data.getInstance();
+            lData.xNewIP(lEntry);
+            setVisible(false);
+        }
+    }//GEN-LAST:event_btnOKActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnOK;
+    private javax.swing.JLabel lbIP;
     private javax.swing.JLabel lbIPaddress;
+    private javax.swing.JLabel lbName;
+    private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 }

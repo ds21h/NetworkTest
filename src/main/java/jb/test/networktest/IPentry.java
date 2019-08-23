@@ -10,11 +10,20 @@ package jb.test.networktest;
  * @author Jan
  */
 class IPentry {
+    private int mID;
     private String mName;
     private int[] mIP;
     private int mPort;
     
-    IPentry(String pName, int pIP1, int pIP2, int pIP3, int pIP4, int pPort){
+    IPentry(String pName, int[] pIP, int pPort){
+        mID = -1;
+        mName = pName;
+        mIP = pIP;
+        mPort = pPort;
+    }
+    
+    IPentry(int pID, String pName, int pIP1, int pIP2, int pIP3, int pIP4, int pPort){
+        mID = pID;
         mIP = new int[4];
         mName = pName;
         mIP[0] = pIP1;
@@ -26,6 +35,14 @@ class IPentry {
     
     String xName(){
         return mName;
+    }
+    
+    int xIP(int pPos){
+       if (pPos >= 0 && pPos < mIP.length){
+           return mIP[pPos];
+       } else {
+           return 0;
+       }
     }
     
     String xIP(){

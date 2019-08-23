@@ -15,6 +15,8 @@ import javax.swing.table.DefaultTableModel;
 class DlgSelIP extends javax.swing.JDialog {
 
     private Data mData;
+    private List<IPentry> mIPentries;
+    private IPentry mEntry;
 
     /**
      * Creates new form DlgSelIP
@@ -22,13 +24,12 @@ class DlgSelIP extends javax.swing.JDialog {
     DlgSelIP(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
 
-        List<IPentry> lIPentries;
         DefaultTableModel lModel;
         int lRow;
 
         initComponents();
         mData = Data.getInstance();
-        lIPentries = mData.xIPentries();
+        mIPentries = mData.xIPentries();
         lModel = new DefaultTableModel() {
             String[] lColumnName = {"Name", "IP", "Port"};
 
@@ -42,15 +43,19 @@ class DlgSelIP extends javax.swing.JDialog {
                 return lColumnName[pIndex];
             }
         };
-        lModel.setRowCount(lIPentries.size());
+        lModel.setRowCount(mIPentries.size());
         tblIP.setModel(lModel);
-        for (lRow = 0; lRow < lIPentries.size(); lRow++){
-            lModel.setValueAt(lIPentries.get(lRow).xName() , lRow, 0);
-            lModel.setValueAt(lIPentries.get(lRow).xIP() , lRow, 1);
-            lModel.setValueAt(lIPentries.get(lRow).xPort() , lRow, 2);
+        for (lRow = 0; lRow < mIPentries.size(); lRow++){
+            lModel.setValueAt(mIPentries.get(lRow).xName() , lRow, 0);
+            lModel.setValueAt(mIPentries.get(lRow).xIP() , lRow, 1);
+            lModel.setValueAt(mIPentries.get(lRow).xPort() , lRow, 2);
         }
     }
 
+    IPentry xIPentry(){
+        return mEntry;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -62,6 +67,7 @@ class DlgSelIP extends javax.swing.JDialog {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblIP = new javax.swing.JTable();
+        btnSelect = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Select IP address");
@@ -89,71 +95,54 @@ class DlgSelIP extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tblIP.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tblIP);
+
+        btnSelect.setText("Select");
+        btnSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSelect)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnSelect)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DlgSelIP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DlgSelIP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DlgSelIP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DlgSelIP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
+        int lIndex;
+        
+        if (tblIP.getSelectedRowCount() > 0){
+            lIndex = tblIP.getSelectedRow();
+            mEntry = mIPentries.get(lIndex);
+        } else {
+            mEntry = null;
         }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                DlgSelIP dialog = new DlgSelIP(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+        setVisible(false);
+    }//GEN-LAST:event_btnSelectActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSelect;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblIP;
     // End of variables declaration//GEN-END:variables
