@@ -5,7 +5,14 @@
  */
 package jb.test.networktest;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -17,20 +24,39 @@ class DlgSelIP extends javax.swing.JDialog {
     private Data mData;
     private List<IPentry> mIPentries;
     private IPentry mEntry;
+    private DefaultTableModel mModel;
 
     /**
      * Creates new form DlgSelIP
      */
-    DlgSelIP(java.awt.Frame parent, boolean modal) {
+    DlgSelIP(java.awt.Frame parent, boolean modal, IPentry pEntry) {
         super(parent, modal);
 
-        DefaultTableModel lModel;
         int lRow;
 
         initComponents();
+
+        mEntry = new IPentry(pEntry);
         mData = Data.getInstance();
-        mIPentries = mData.xIPentries();
-        lModel = new DefaultTableModel() {
+
+        txtName.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                sSetSave();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                sSetSave();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                sSetSave();
+            }
+        });
+
+        mModel = new DefaultTableModel() {
             String[] lColumnName = {"Name", "IP", "Port"};
 
             @Override
@@ -42,20 +68,69 @@ class DlgSelIP extends javax.swing.JDialog {
             public String getColumnName(int pIndex) {
                 return lColumnName[pIndex];
             }
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
         };
-        lModel.setRowCount(mIPentries.size());
-        tblIP.setModel(lModel);
-        for (lRow = 0; lRow < mIPentries.size(); lRow++){
-            lModel.setValueAt(mIPentries.get(lRow).xName() , lRow, 0);
-            lModel.setValueAt(mIPentries.get(lRow).xIP() , lRow, 1);
-            lModel.setValueAt(mIPentries.get(lRow).xPort() , lRow, 2);
+        tblIP.setModel(mModel);
+        tblIP.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent pSE) {
+                if (!pSE.getValueIsAdjusting()) {
+                    if (tblIP.getSelectedRowCount() > 0) {
+                        btnSelect.setEnabled(true);
+                        btnDelete.setEnabled(true);
+                    } else {
+                        btnSelect.setEnabled(false);
+                        btnDelete.setEnabled(false);
+                    }
+                }
+            }
+        });
+        tblIP.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent pME) {
+                if (pME.getButton() == MouseEvent.BUTTON1 && pME.getClickCount() == 2 && tblIP.getSelectedRow() >= 0) {
+                    btnSelectActionPerformed(null);
+                }
+            }
+        });
+        lbIPaddress.setText(mEntry.xIP() + " : " + String.valueOf(mEntry.xPort()));
+        btnSave.setEnabled(false);
+        sFillTable();
+    }
+
+    private void sSetSave() {
+        String lText;
+
+        lText = txtName.getText().trim();
+        if (lText.equals("")) {
+            btnSave.setEnabled(false);
+        } else {
+            btnSave.setEnabled(true);
         }
     }
 
-    IPentry xIPentry(){
+    private void sFillTable() {
+        int lRow;
+
+        mIPentries = mData.xIPentries();
+        mModel.setRowCount(mIPentries.size());
+        for (lRow = 0; lRow < mIPentries.size(); lRow++) {
+            mModel.setValueAt(mIPentries.get(lRow).xName(), lRow, 0);
+            mModel.setValueAt(mIPentries.get(lRow).xIP(), lRow, 1);
+            mModel.setValueAt(mIPentries.get(lRow).xPort(), lRow, 2);
+        }
+        tblIP.clearSelection();
+        btnSelect.setEnabled(false);
+        btnDelete.setEnabled(false);
+    }
+
+    IPentry xIPentry() {
         return mEntry;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,12 +140,20 @@ class DlgSelIP extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        txtName = new javax.swing.JTextField();
+        lbName = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblIP = new javax.swing.JTable();
         btnSelect = new javax.swing.JButton();
+        lbIP = new javax.swing.JLabel();
+        lbIPaddress = new javax.swing.JLabel();
+        btnSave = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Select IP address");
+
+        lbName.setText("Name:");
 
         tblIP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -105,25 +188,67 @@ class DlgSelIP extends javax.swing.JDialog {
             }
         });
 
+        lbIP.setText("IP address:");
+
+        lbIPaddress.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbIPaddress.setText("0.0.0.0:0");
+
+        btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSelect)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbIP)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbIPaddress)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                        .addComponent(lbName, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSelect, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSave, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnSelect)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbIPaddress)
+                    .addComponent(lbIP)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbName)
+                    .addComponent(btnSave))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnDelete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSelect)))
+                .addGap(13, 13, 13))
         );
 
         pack();
@@ -131,19 +256,50 @@ class DlgSelIP extends javax.swing.JDialog {
 
     private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
         int lIndex;
-        
-        if (tblIP.getSelectedRowCount() > 0){
+
+        if (tblIP.getSelectedRowCount() > 0) {
             lIndex = tblIP.getSelectedRow();
             mEntry = mIPentries.get(lIndex);
-        } else {
-            mEntry = null;
         }
         setVisible(false);
     }//GEN-LAST:event_btnSelectActionPerformed
 
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        String lName;
+        IPentry lEntry;
+
+        lName = txtName.getText().trim();
+        if (lName.equals("")) {
+            JOptionPane.showMessageDialog(this, "Name must be provided!");
+        } else {
+            lEntry = new IPentry(mEntry);
+            lEntry.xName(lName);
+            mData.xNewIP(lEntry);
+            setVisible(false);
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int lIndex;
+        IPentry lEntry;
+
+        if (tblIP.getSelectedRowCount() > 0) {
+            lIndex = tblIP.getSelectedRow();
+            lEntry = mIPentries.get(lIndex);
+            mData.xDeleteIP(lEntry);
+            sFillTable();
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSelect;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbIP;
+    private javax.swing.JLabel lbIPaddress;
+    private javax.swing.JLabel lbName;
     private javax.swing.JTable tblIP;
+    private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,7 +7,6 @@ package jb.test.networktest;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -22,6 +21,7 @@ public class FrmMain extends javax.swing.JFrame {
     private final String[] cMediaReq = {"Text", "JSON"};
     private final String[] cMediaResp = {"Text", "JSON", "Image"};
     private final String cMediaRest[] = {RestAPI.cMediaText, RestAPI.cMediaJSON, RestAPI.cMediaImage};
+
     /**
      * Creates new form FrmMain
      */
@@ -29,7 +29,7 @@ public class FrmMain extends javax.swing.JFrame {
         int lCount;
 
         initComponents();
-        
+
         cmbVerb.removeAllItems();
         for (lCount = 0; lCount < cVerbs.length; lCount++) {
             cmbVerb.addItem(cVerbs[lCount]);
@@ -56,9 +56,8 @@ public class FrmMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        popIP = new javax.swing.JPopupMenu();
-        mnuRead = new javax.swing.JMenuItem();
-        mnuSave = new javax.swing.JMenuItem();
+        btnSend = new javax.swing.JButton();
+        pnlIP = new javax.swing.JPanel();
         lbIP = new javax.swing.JLabel();
         txtIP1 = new javax.swing.JTextField();
         txtIP2 = new javax.swing.JTextField();
@@ -66,40 +65,33 @@ public class FrmMain extends javax.swing.JFrame {
         txtIP4 = new javax.swing.JTextField();
         lbPort = new javax.swing.JLabel();
         txtPort = new javax.swing.JTextField();
+        btnIP = new javax.swing.JButton();
+        pnlURI = new javax.swing.JPanel();
+        cmbVerb = new javax.swing.JComboBox<>();
         lbURI = new javax.swing.JLabel();
         txtURI = new javax.swing.JTextField();
-        scrRequest = new javax.swing.JScrollPane();
-        txtRequest = new javax.swing.JTextArea();
-        btnSend = new javax.swing.JButton();
+        btnUri = new javax.swing.JButton();
         lbPar = new javax.swing.JLabel();
         txtPar = new javax.swing.JTextField();
-        cmbVerb = new javax.swing.JComboBox<>();
-        lbResponse = new javax.swing.JLabel();
+        pnlReq = new javax.swing.JPanel();
+        lbRequest = new javax.swing.JLabel();
         cmbMediaReq = new javax.swing.JComboBox<>();
+        scrRequest = new javax.swing.JScrollPane();
+        txtRequest = new javax.swing.JTextArea();
+        pnlResp = new javax.swing.JPanel();
+        lbResponse = new javax.swing.JLabel();
+        cmbMediaResp = new javax.swing.JComboBox<>();
         scrResponse = new javax.swing.JScrollPane();
         txtResponse = new javax.swing.JTextArea();
-        lbRequest = new javax.swing.JLabel();
-        cmbMediaResp = new javax.swing.JComboBox<>();
-
-        mnuRead.setText("Read");
-        mnuRead.setToolTipText("");
-        mnuRead.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuReadActionPerformed(evt);
-            }
-        });
-        popIP.add(mnuRead);
-
-        mnuSave.setText("Save");
-        mnuSave.setToolTipText("");
-        mnuSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuSaveActionPerformed(evt);
-            }
-        });
-        popIP.add(mnuSave);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        btnSend.setText("Send");
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
 
         lbIP.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbIP.setText("IP:");
@@ -111,11 +103,6 @@ public class FrmMain extends javax.swing.JFrame {
         txtIP1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtIP1FocusLost(evt);
-            }
-        });
-        txtIP1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtIP1MouseClicked(evt);
             }
         });
         txtIP1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -179,6 +166,52 @@ public class FrmMain extends javax.swing.JFrame {
             }
         });
 
+        btnIP.setText("...");
+        btnIP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIPActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlIPLayout = new javax.swing.GroupLayout(pnlIP);
+        pnlIP.setLayout(pnlIPLayout);
+        pnlIPLayout.setHorizontalGroup(
+            pnlIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlIPLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbIP)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtIP1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtIP2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtIP3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtIP4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbPort)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnIP, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlIPLayout.setVerticalGroup(
+            pnlIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlIPLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbIP)
+                    .addComponent(txtIP1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIP2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIP3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIP4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbPort)
+                    .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnIP))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         lbURI.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbURI.setText("URI:");
         lbURI.setToolTipText("");
@@ -197,17 +230,10 @@ public class FrmMain extends javax.swing.JFrame {
             }
         });
 
-        scrRequest.setPreferredSize(new java.awt.Dimension(250, 96));
-
-        txtRequest.setColumns(20);
-        txtRequest.setLineWrap(true);
-        txtRequest.setRows(5);
-        scrRequest.setViewportView(txtRequest);
-
-        btnSend.setText("Send");
-        btnSend.addActionListener(new java.awt.event.ActionListener() {
+        btnUri.setText("...");
+        btnUri.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSendActionPerformed(evt);
+                btnUriActionPerformed(evt);
             }
         });
 
@@ -229,10 +255,77 @@ public class FrmMain extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout pnlURILayout = new javax.swing.GroupLayout(pnlURI);
+        pnlURI.setLayout(pnlURILayout);
+        pnlURILayout.setHorizontalGroup(
+            pnlURILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlURILayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cmbVerb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlURILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbURI)
+                    .addComponent(lbPar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlURILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtURI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnUri, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        pnlURILayout.setVerticalGroup(
+            pnlURILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlURILayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlURILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbVerb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbURI)
+                    .addComponent(txtURI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUri))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlURILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbPar)
+                    .addComponent(txtPar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        lbRequest.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbRequest.setText("Request:");
+
+        cmbMediaReq.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        scrRequest.setPreferredSize(new java.awt.Dimension(250, 96));
+
+        txtRequest.setColumns(20);
+        txtRequest.setLineWrap(true);
+        txtRequest.setRows(5);
+        scrRequest.setViewportView(txtRequest);
+
+        javax.swing.GroupLayout pnlReqLayout = new javax.swing.GroupLayout(pnlReq);
+        pnlReq.setLayout(pnlReqLayout);
+        pnlReqLayout.setHorizontalGroup(
+            pnlReqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlReqLayout.createSequentialGroup()
+                .addGroup(pnlReqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cmbMediaReq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbRequest))
+                .addGap(18, 18, 18)
+                .addComponent(scrRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlReqLayout.setVerticalGroup(
+            pnlReqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlReqLayout.createSequentialGroup()
+                .addComponent(lbRequest)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlReqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbMediaReq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(scrRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
         lbResponse.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lbResponse.setText("Response:");
 
-        cmbMediaReq.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMediaResp.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         scrResponse.setPreferredSize(new java.awt.Dimension(166, 126));
 
@@ -242,10 +335,29 @@ public class FrmMain extends javax.swing.JFrame {
         txtResponse.setRows(5);
         scrResponse.setViewportView(txtResponse);
 
-        lbRequest.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        lbRequest.setText("Request:");
-
-        cmbMediaResp.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        javax.swing.GroupLayout pnlRespLayout = new javax.swing.GroupLayout(pnlResp);
+        pnlResp.setLayout(pnlRespLayout);
+        pnlRespLayout.setHorizontalGroup(
+            pnlRespLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRespLayout.createSequentialGroup()
+                .addComponent(lbResponse)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(pnlRespLayout.createSequentialGroup()
+                .addComponent(cmbMediaResp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(scrResponse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlRespLayout.setVerticalGroup(
+            pnlRespLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRespLayout.createSequentialGroup()
+                .addComponent(lbResponse)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlRespLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlRespLayout.createSequentialGroup()
+                        .addComponent(cmbMediaResp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(scrResponse, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -253,89 +365,34 @@ public class FrmMain extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlURI, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlReq, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlResp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(216, 216, 216)
-                        .addComponent(lbPort)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbRequest)
-                            .addComponent(lbResponse)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lbIP)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIP1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIP2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIP3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIP4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbMediaReq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(cmbVerb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbURI)
-                                    .addComponent(lbPar)))
-                            .addComponent(cmbMediaResp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(scrRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
-                            .addComponent(scrResponse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtURI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtPar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSend)))
+                                .addComponent(pnlIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 412, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnSend)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbIP)
-                    .addComponent(txtIP1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIP2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIP3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIP4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbPort)
-                    .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbURI)
-                    .addComponent(cmbVerb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtURI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(3, 3, 3)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbPar)
-                    .addComponent(txtPar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
-                .addComponent(lbRequest)
+                .addComponent(pnlIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbMediaReq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(scrRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addComponent(lbResponse)
-                .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(scrResponse, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSend))
-                    .addComponent(cmbMediaResp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12))
+                .addComponent(pnlURI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlReq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(pnlResp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSend)
+                .addContainerGap())
         );
 
         pack();
@@ -401,20 +458,44 @@ public class FrmMain extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtParKeyTyped
 
-    private void txtIP1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtIP1MouseClicked
-        if (evt.getButton() == MouseEvent.BUTTON3) {
-            popIP.show(txtIP1, evt.getX(), evt.getY());
-        }
-    }//GEN-LAST:event_txtIP1MouseClicked
-
-    private void mnuReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuReadActionPerformed
+    private void btnIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIPActionPerformed
         DlgSelIP lSel;
         IPentry lEntry;
-        
-        lSel = new DlgSelIP(this, true);
+        int[] lIP;
+        int lPort;
+
+        lIP = new int[4];
+        try {
+            lIP[0] = Integer.parseInt(txtIP1.getText());
+        } catch (NumberFormatException pExc) {
+            lIP[0] = 0;
+        }
+        try {
+            lIP[1] = Integer.parseInt(txtIP2.getText());
+        } catch (NumberFormatException pExc) {
+            lIP[1] = 0;
+        }
+        try {
+            lIP[2] = Integer.parseInt(txtIP3.getText());
+        } catch (NumberFormatException pExc) {
+            lIP[2] = 0;
+        }
+        try {
+            lIP[3] = Integer.parseInt(txtIP4.getText());
+        } catch (NumberFormatException pExc) {
+            lIP[3] = 0;
+        }
+        try {
+            lPort = Integer.parseInt(txtPort.getText());
+        } catch (NumberFormatException pExc) {
+            lPort = 0;
+        }
+
+        lEntry = new IPentry("", lIP, lPort);
+        lSel = new DlgSelIP(this, true, lEntry);
         lSel.setVisible(true);
         lEntry = lSel.xIPentry();
-        if (lEntry != null){
+        if (lEntry != null) {
             txtIP1.setText(String.valueOf(lEntry.xIP(0)));
             txtIP2.setText(String.valueOf(lEntry.xIP(1)));
             txtIP3.setText(String.valueOf(lEntry.xIP(2)));
@@ -422,45 +503,36 @@ public class FrmMain extends javax.swing.JFrame {
             txtPort.setText(String.valueOf(lEntry.xPort()));
         }
         lSel.dispose();
-    }//GEN-LAST:event_mnuReadActionPerformed
+    }//GEN-LAST:event_btnIPActionPerformed
 
-    private void mnuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSaveActionPerformed
-        DlgSaveIP lSave;
-        int[] lIP;
-        int lPort;
-        
-        lIP = new int[4];
-        try{
-            lIP[0] = Integer.parseInt(txtIP1.getText());
-        } catch (NumberFormatException pExc){
-            lIP[0] = 0;
+    private void btnUriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUriActionPerformed
+        DlgSelURI lSel;
+        UriEntry lEntry;
+        String lUri;
+        String lParms;
+
+        lUri = txtURI.getText().strip();
+        lParms = txtPar.getText().strip();
+        lEntry = new UriEntry("", "", cmbVerb.getSelectedIndex(), lUri, lParms, cmbMediaReq.getSelectedIndex(), txtRequest.getText().trim(), cmbMediaResp.getSelectedIndex());
+        lSel = new DlgSelURI(this, true, lEntry);
+        lSel.setVisible(true);
+        lEntry = lSel.xUriEntry();
+        if (lEntry != null) {
+            if (lEntry.xUriType() >= 0){
+                cmbVerb.setSelectedIndex(lEntry.xUriType());
+            }
+            txtURI.setText(lEntry.xUri());
+            txtPar.setText(lEntry.xParms());
+            if (lEntry.xReqType() >= 0) {
+                cmbMediaReq.setSelectedIndex(lEntry.xReqType());
+            }
+            txtRequest.setText(lEntry.xRequest());
+            if (lEntry.xRespType() >= 0) {
+                cmbMediaResp.setSelectedIndex(lEntry.xRespType());
+            }
         }
-        try{
-            lIP[1] = Integer.parseInt(txtIP2.getText());
-        } catch (NumberFormatException pExc){
-            lIP[1] = 0;
-        }
-        try{
-            lIP[2] = Integer.parseInt(txtIP3.getText());
-        } catch (NumberFormatException pExc){
-            lIP[2] = 0;
-        }
-        try{
-            lIP[3] = Integer.parseInt(txtIP4.getText());
-        } catch (NumberFormatException pExc){
-            lIP[3] = 0;
-        }
-        try{
-            lPort = Integer.parseInt(txtPort.getText());
-        } catch (NumberFormatException pExc){
-            lPort = 0;
-        }
-        
-        lSave = new DlgSaveIP(this, true);
-        lSave.xInitData(lIP, lPort);
-        lSave.setVisible(true);
-        lSave.dispose();
-    }//GEN-LAST:event_mnuSaveActionPerformed
+        lSel.dispose();
+    }//GEN-LAST:event_btnUriActionPerformed
 
     private void hInputDigit(KeyEvent pEvent) {
         char lInput;
@@ -592,7 +664,9 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnIP;
     private javax.swing.JButton btnSend;
+    private javax.swing.JButton btnUri;
     private javax.swing.JComboBox<String> cmbMediaReq;
     private javax.swing.JComboBox<String> cmbMediaResp;
     private javax.swing.JComboBox<String> cmbVerb;
@@ -602,9 +676,10 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JLabel lbRequest;
     private javax.swing.JLabel lbResponse;
     private javax.swing.JLabel lbURI;
-    private javax.swing.JMenuItem mnuRead;
-    private javax.swing.JMenuItem mnuSave;
-    private javax.swing.JPopupMenu popIP;
+    private javax.swing.JPanel pnlIP;
+    private javax.swing.JPanel pnlReq;
+    private javax.swing.JPanel pnlResp;
+    private javax.swing.JPanel pnlURI;
     private javax.swing.JScrollPane scrRequest;
     private javax.swing.JScrollPane scrResponse;
     private javax.swing.JTextField txtIP1;

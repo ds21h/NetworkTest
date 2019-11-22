@@ -64,9 +64,19 @@ public class Data {
             sDeleteDB();
             sDefineDB();
         } else {
-            if (lInternal.xVersion() != 1){
-                sDeleteDB();
-                sDefineDB();
+            switch (lInternal.xVersion()) {
+                case 1:
+                    sDeleteInternal();
+                    sDefineInternal();
+                    sDeleteUri();
+                    sDefineUri();
+                    break;
+                case 2:
+                    break;
+                default:
+                    sDeleteDB();
+                    sDefineDB();
+                    break;
             }
         }
     }
@@ -74,6 +84,7 @@ public class Data {
     private void sDeleteDB() {
         sDeleteInternal();
         sDeleteIP();
+        sDeleteUri();
     }
 
     private void sDeleteInternal() {
@@ -106,11 +117,25 @@ public class Data {
         }
     }
 
+    private void sDeleteUri() {
+        Statement lStm;
+        String lSql = "DROP TABLE IF EXISTS Uri;";
+        boolean lResult;
+
+        try {
+            lStm = mConn.createStatement();
+            lResult = lStm.execute(lSql);
+            lStm.close();
+        } catch (SQLException ex) {
+            mStatus = cSQL_error;
+            mText = ex.getMessage();
+        }
+    }
+
     private void sDefineDB() {
-        if (sDefineInternal()) {
-            sInitInternal();
-        };
+        sDefineInternal();
         sDefineIP();
+        sDefineUri();
     }
 
     private boolean sDefineInternal() {
@@ -124,7 +149,7 @@ public class Data {
             lStm = mConn.createStatement();
             lStm.execute(lSql);
             lStm.close();
-            lResult = true;
+            lResult = sInitInternal();
         } catch (SQLException ex) {
             mStatus = cSQL_error;
             mText = ex.getMessage();
@@ -138,7 +163,7 @@ public class Data {
         String lSql = "INSERT INTO Internal "
                 + "(ID, Version) "
                 + "VALUES "
-                + "('NetworkTest', 1)";
+                + "('NetworkTest', 2)";
         boolean lResult;
 
         try {
@@ -164,6 +189,34 @@ public class Data {
                 + "IP3 integer Not Null, "
                 + "IP4 integer Not Null, "
                 + "Port integer Not Null"
+                + ")";
+        boolean lResult;
+
+        try {
+            lStm = mConn.createStatement();
+            lStm.execute(lSql);
+            lStm.close();
+            lResult = true;
+        } catch (SQLException ex) {
+            mStatus = cSQL_error;
+            mText = ex.getMessage();
+            lResult = false;
+        }
+        return lResult;
+    }
+
+    private boolean sDefineUri() {
+        Statement lStm;
+        String lSql = "CREATE TABLE Uri ("
+                + "UriId integer primary key, "
+                + "Service Text Not Null, "
+                + "Name Text Not Null, "
+                + "UriType integer Not Null, "
+                + "UriValue String Not Null, "
+                + "Parms String Not Null, "
+                + "ReqType integer Not Null, "
+                + "Request Text Not Null, "
+                + "RespType integer Not Null"
                 + ")";
         boolean lResult;
 
@@ -294,6 +347,116 @@ public class Data {
                     + pEntry.xIP(2) + ", "
                     + pEntry.xIP(3) + ", "
                     + pEntry.xPort() + ");";
+            try {
+                lStm = mConn.createStatement();
+                lStm.executeUpdate(lSql);
+                lStm.close();
+            } catch (SQLException ex) {
+                mStatus = cSQL_error;
+                mText = ex.getMessage();
+            }
+        }
+    }
+
+    public void xDeleteIP(IPentry pEntry) {
+        Statement lStm;
+        String lSql;
+
+        if (mStatus == cOK) {
+            lSql = "DELETE from IPaddress "
+                    + "WHERE IPid = '" + pEntry.xID() + "';";
+            try {
+                lStm = mConn.createStatement();
+                lStm.executeUpdate(lSql);
+                lStm.close();
+            } catch (SQLException ex) {
+                mStatus = cSQL_error;
+                mText = ex.getMessage();
+            }
+        }
+    }
+
+    public List<UriEntry> xUriEntries() {
+        List<UriEntry> lUriEntries;
+        UriEntry lUriEntry;
+        int lUriId;
+        String lService;
+        String lName;
+        int lUriType;
+        String lUri;
+        String lParms;
+        int lReqType;
+        String lRequest;
+        int lRespType;
+        Statement lStm;
+        ResultSet lRes;
+        String lSql = "SELECT UriId, Service, Name, UriType, UriValue, Parms, ReqType, Request, RespType "
+                + "FROM Uri "
+                + "ORDER BY Service, Name;";
+
+        lUriEntries = new ArrayList<>();
+        mText = "";
+        if (mStatus == cOK) {
+            try {
+                lStm = mConn.createStatement();
+                lRes = lStm.executeQuery(lSql);
+                while (lRes.next()) {
+                    lUriId = lRes.getInt("UriId");
+                    lService = lRes.getString("Service");
+                    lName = lRes.getString("Name");
+                    lUriType = lRes.getInt("UriType");
+                    lUri = lRes.getString("UriValue");
+                    lParms = lRes.getString("Parms");
+                    lReqType = lRes.getInt("ReqType");
+                    lRequest = lRes.getString("Request");
+                    lRespType = lRes.getInt("RespType");
+                    lUriEntry = new UriEntry(lUriId, lService, lName, lUriType, lUri, lParms, lReqType, lRequest, lRespType);
+                    lUriEntries.add(lUriEntry);
+                }
+                lRes.close();
+                lStm.close();
+            } catch (SQLException ex) {
+                mStatus = cSQL_error;
+                mText = ex.getMessage();
+            }
+        }
+        return lUriEntries;
+    }
+
+    public void xNewUri(UriEntry pEntry) {
+        Statement lStm;
+        String lSql;
+        
+        if (mStatus == cOK) {
+            lSql = "INSERT INTO Uri (Service, Name, UriType, UriValue, Parms, ReqType, Request, RespType) "
+                    + "VALUES ("
+                    + "'" + pEntry.xService() + "', "
+                    + "'" + pEntry.xName() + "', "
+                    + "'" + String.valueOf(pEntry.xUriType()) + "', "
+                    + "'" + pEntry.xUri() + "', "
+                    + "'" + pEntry.xParms() + "', "
+                    + "'" + String.valueOf(pEntry.xReqType()) + "', "
+                    + "'" + pEntry.xRequest() + "', "
+                    + "'" + String.valueOf(pEntry.xRespType()) + "'"
+                    + ")";
+            try {
+                lStm = mConn.createStatement();
+                lStm.executeUpdate(lSql);
+                lStm.close();
+            } catch (SQLException ex) {
+                mStatus = cSQL_error;
+                mText = ex.getMessage();
+            }
+        }
+    }
+
+    public void xDeleteUri(UriEntry pEntry) {
+        Statement lStm;
+        String lSql;
+
+        if (mStatus == cOK) {
+            lSql = "DELETE from Uri "
+                    + "WHERE UriId = '" + pEntry.xID() + "';";
             try {
                 lStm = mConn.createStatement();
                 lStm.executeUpdate(lSql);
