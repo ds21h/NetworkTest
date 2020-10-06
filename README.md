@@ -6,9 +6,10 @@ You specify the IP address of the service you are testing. You also enter the UR
 
 History
 
-Version 1.0 -
+Version 1.0 - 06-10-2020
 - Supports data format 'text' and 'JSON'
 - Also supports data format 'image' for reply
+- If the IP address is specified then the URI to use is constructed from that IP address and the URI, otherwise the URI is used as such (so include http://...)
 
 Version 0.2 - 09-06-2019
 - Now also handles other verbs.

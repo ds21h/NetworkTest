@@ -518,7 +518,7 @@ public class FrmMain extends javax.swing.JFrame {
         lSel.setVisible(true);
         lEntry = lSel.xUriEntry();
         if (lEntry != null) {
-            if (lEntry.xUriType() >= 0){
+            if (lEntry.xUriType() >= 0) {
                 cmbVerb.setSelectedIndex(lEntry.xUriType());
             }
             txtURI.setText(lEntry.xUri());
@@ -606,7 +606,11 @@ public class FrmMain extends javax.swing.JFrame {
         lRest.xMethod(lVerb);
         lRest.xMediaRequest(cMediaRest[cmbMediaReq.getSelectedIndex()]);
         lRest.xMediaReply(cMediaRest[cmbMediaResp.getSelectedIndex()]);
-        lRest.xUrl("http://" + txtIP1.getText() + "." + txtIP2.getText() + "." + txtIP3.getText() + "." + txtIP4.getText() + ":" + txtPort.getText() + "/" + txtURI.getText());
+        if (txtIP1.getText().equals("")) {
+            lRest.xUrl(txtURI.getText());
+        } else {
+            lRest.xUrl("http://" + txtIP1.getText() + "." + txtIP2.getText() + "." + txtIP3.getText() + "." + txtIP4.getText() + ":" + txtPort.getText() + "/" + txtURI.getText());
+        }
         lRest.xPars(txtPar.getText());
         lRest.xRequest(txtRequest.getText());
         lReply = lRest.xCallApi();
