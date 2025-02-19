@@ -575,11 +575,7 @@ public class FrmMain extends javax.swing.JFrame {
         lText = pPort.getText().trim();
         try {
             lComp = Integer.parseInt(lText);
-            if (lComp < 0 || lComp > 65535) {
-                lOK = false;
-            } else {
-                lOK = true;
-            }
+            lOK = !(lComp < 0 || lComp > 65535);
         } catch (NumberFormatException pExc) {
             lOK = false;
         }

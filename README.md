@@ -6,6 +6,10 @@ You specify the IP address of the service you are testing. You also enter the UR
 
 History
 
+Version 1.1 - 19-02-2025
+- Upgraded to jdk21
+- Uses latest versions of dependencies
+
 Version 1.0 - 06-10-2020
 - Supports data format 'text' and 'JSON'
 - Also supports data format 'image' for reply
