@@ -5,7 +5,6 @@
  */
 package jb.test.networktest;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -13,8 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import org.json.JSONException;
@@ -96,7 +96,8 @@ class RestAPI {
             lUrlS = mUrl;
         }
         try {
-            lUrl = new URL(lUrlS);
+//            lUrl = new URL(lUrlS);
+            lUrl = new URI(lUrlS).toURL();
             lConn = (HttpURLConnection) lUrl.openConnection();
             lConn.setRequestMethod(mMethod);
             lConn.setRequestProperty("Accept", mMediaReply);
@@ -150,7 +151,7 @@ class RestAPI {
                 lOutput = lStr.toString();
                 lRestResult = new RestResult(lResult, lOutput, lMessage);
             }
-        } catch (MalformedURLException e) {
+        } catch (URISyntaxException e) {
             lRestResult = new RestResult("Malformed URL: " + e.getLocalizedMessage(), Result.cResultError);
         } catch (SocketTimeoutException pExc) {
             if (pExc.getLocalizedMessage() == null) {
